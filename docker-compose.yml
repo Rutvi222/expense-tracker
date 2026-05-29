@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  # PHP Apache Container
+  app:
+    build: .
+    container_name: expense_app
+    ports:
+      - "8000:80"
+    volumes:
+      - ./src:/var/www/html
+    depends_on:
+      - db
+    networks:
+      - expense-network
+
+  # MySQL Database Container
+  db:
+    image: mysql:8.4
+    container_name: expense_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: expense_tracker
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - expense-network
+
+  # phpMyAdmin Container
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: expense_pma
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: password
+    depends_on:
+      - db
+    networks:
+      - expense-network
+
+networks:
+  expense-network:
+    driver: bridge
+
+volumes:
+  db_data:

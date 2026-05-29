@@ -1,0 +1,13 @@
+# Docker database data
+db_data/
+
+# IDEs & OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# .env
+# /.env
+# /.env.*
